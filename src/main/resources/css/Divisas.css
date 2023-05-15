@@ -1,0 +1,9 @@
+#contenedor__Padre{
+    -fx-background-color: "#0f0e17";
+}
+#lbl__title{
+    -fx-font-family: "Inconsolata";
+    -fx-text-fill: "#FFF";
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+}
