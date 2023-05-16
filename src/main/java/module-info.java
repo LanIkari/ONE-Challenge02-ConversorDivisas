@@ -13,5 +13,7 @@ module com.one.challenge02 {
     opens com.one.challenge02 to javafx.fxml;
     exports com.one.challenge02;
     exports com.one.challenge02.Controller;
+    exports com.one.challenge02.conection;
+    exports com.one.challenge02.model;
 
 }

@@ -1,4 +1,231 @@
 package com.one.challenge02.Controller;
 
+import com.one.challenge02.conection.API;
+import com.one.challenge02.model.datosCbxDivisas;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+
 public class conversorDivisasController {
+    //Declaramos los componentes de nuestra Interfaz Divisas para poder manipular los datos
+    // ============================== Inicio ==================================
+    @FXML
+    private ComboBox<String> cbxDivisaUno;
+    @FXML
+    private ComboBox<String> cbxDivisaDos;
+    @FXML
+    private TextField txtDivisaUno;
+    @FXML
+    private TextField txtDivisaDos;
+    // =============================== Fin ====================================
+
+    @FXML
+    private ComboBox<String> cbxTemp1;
+    @FXML
+    private ComboBox<String> cbxTemp2;
+    @FXML
+    private TextField txtTemp1;
+    @FXML
+    private TextField txtTemp2;
+
+    //Declaramos variables que nos ayudaran a guardar los cambios cada vez que se modifique.
+    private UnaryOperator<TextFormatter.Change> DivisaUno;
+    private UnaryOperator<TextFormatter.Change> DivisaDos;
+
+    //Inicializamos nuestra API creando un objeto de tipo API
+    API apiDivisas=new API();
+    //Creamos un objeto que nos ayudara a guardar la taza de cambio actual
+    Map<String,Double> cambioActual;
+    //Inicializamos un Objeto de tipo DatosCbxDivisas para llenar los combobox
+    datosCbxDivisas ListaCbx = new datosCbxDivisas();
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
+    @FXML
+    private void inicializacion(){
+        ObservableList<String> ListaDivisas = FXCollections.observableArrayList();
+        for (Map.Entry<String, String> entrada : ListaCbx.MapaDivisas.entrySet()) {
+            String opcion = entrada.getKey() + " - " + entrada.getValue();
+            String opcionvalue = entrada.getValue();
+            ListaDivisas.add(opcion);
+        }
+        // Cargando la API y lo Almacenamos en un Map
+        cambioActual = apiDivisas.ApiMap();
+
+        // Llenamos los combBox de DIVISAS
+        Collections.sort(ListaDivisas);
+        ObservableList<String> OpDivisas1 = FXCollections.observableArrayList(ListaCbx.ListaDivisas);
+        cbxDivisaUno.setItems(ListaDivisas);
+        cbxDivisaUno.setValue("USD - Dólar americano");
+        ObservableList<String> OpDivisas2 = FXCollections.observableArrayList(ListaCbx.ListaDivisas);
+        cbxDivisaDos.setItems(ListaDivisas);
+        cbxDivisaDos.setValue("MXN - Peso mexicano");
+
+        // Crear los filtros para los TextFields de DIVISAS
+        DivisaUno = CrearFiltro("[0-9\\.]*");
+        DivisaDos = CrearFiltro("[0-9\\.]*");
+
+        // Crear los filtros para los textFields de DIVISAS
+        DivisaUno = CrearFiltro("[0-9\\.-]*");
+        DivisaDos = CrearFiltro("[0-9\\.-]*");
+
+        // Capturando los datos ingresado en los textField de DIVISAS
+        txtDivisaUno.setTextFormatter(new TextFormatter<>(DivisaUno));
+        txtDivisaDos.setTextFormatter(new TextFormatter<>(DivisaDos));
+
+        // Capturando los datos ingresado en los textField de DIVISAS
+        txtTemp1.setTextFormatter(new TextFormatter<>(DivisaUno));
+        txtTemp2.setTextFormatter(new TextFormatter<>(DivisaDos));
+
+        // Carga el Aplicativo y digitamos algun dato en el textField DIVISAS
+        txtDivisaUno.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (txtDivisaUno.isFocused())
+                CalculoDivisasUNO();
+        });
+        txtDivisaDos.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (txtDivisaDos.isFocused())
+                CalculoDivisasDOS();
+        });
+    }
+
+
+    private void CalculoDivisasUNO() {
+        String DatoCBX1 = "";
+        String DatoCBX2 = "";
+        String DatoCBX1Crudo = cbxDivisaUno.getValue(); // Capturando el valor actual del combobox1
+        String DatoCBX2Crudo = cbxDivisaDos.getValue(); // Capturando el valor actual del combobox2
+
+        int ExtraendoValor1 = DatoCBX1Crudo.indexOf(" ");
+        int ExtraendoValor2 = DatoCBX2Crudo.indexOf(" ");
+
+        if (ExtraendoValor1 != -1) { // Si hay un espacio
+            DatoCBX1 = DatoCBX1Crudo.substring(0, ExtraendoValor1); // Extraer los caracteres hasta el espacio
+            //System.out.println(DatoCBX1); // Imprimir la subcadena
+        }
+
+        if (ExtraendoValor2 != -1) { // Si hay un espacio
+            DatoCBX2 = DatoCBX2Crudo.substring(0, ExtraendoValor2); // Extraer los caracteres hasta el espacio
+            //System.out.println(DatoCBX2); // Imprimir la subcadena
+        }
+
+        Set<String> claves = cambioActual.keySet(); // Capturamos las Claves del Map en un Set
+        // System.out.println(DatoCBX1);
+
+        // Comparamos las claves que son tipo Set con el String DatoCBX1
+        if (claves.contains(DatoCBX1)) {
+            try {
+                double numero1 = txtDivisaUno.getText().isEmpty() ? 0 : Double.parseDouble(txtDivisaUno.getText());
+                double MontoConversion = numero1 * cambioActual.get(DatoCBX2) / cambioActual.get(DatoCBX1);
+                DecimalFormat TresDecimales = new DecimalFormat("#.###"); // Formato para que solo tenga 3 digitos
+                double ResultadoFinal = Double.parseDouble(TresDecimales.format(MontoConversion));
+                if (MontoConversion == 0) {
+                    txtDivisaDos.setText(""); // establecer el número como entero en el
+                } else {
+                    txtDivisaDos.setText(String.valueOf(ResultadoFinal)); // establecer el número como entero en el
+                }
+
+            } catch (NumberFormatException e) {
+                AlertaError();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void CalculoDivisasDOS() {
+        String DatoCBX1 = "";
+        String DatoCBX2 = "";
+        String DatoCBX1Crudo = cbxDivisaUno.getValue(); // Capturando el valor actual del combobox1
+        String DatoCBX2Crudo = cbxDivisaDos.getValue(); // Capturando el valor actual del combobox2
+
+        int ExtraendoValor1 = DatoCBX1Crudo.indexOf(" ");
+        int ExtraendoValor2 = DatoCBX2Crudo.indexOf(" ");
+
+        if (ExtraendoValor1 != -1) { // Si hay un espacio
+            DatoCBX1 = DatoCBX1Crudo.substring(0, ExtraendoValor1); // Extraer los caracteres hasta el espacio
+            //System.out.println(DatoCBX1); // Imprimir la subcadena
+        }
+
+        if (ExtraendoValor2 != -1) { // Si hay un espacio
+            DatoCBX2 = DatoCBX2Crudo.substring(0, ExtraendoValor2); // Extraer los caracteres hasta el espacio
+            //System.out.println(DatoCBX2); // Imprimir la subcadena
+        }
+
+        Set<String> claves = cambioActual.keySet(); // Capturamos las Claves del Map en un Set
+        // System.out.println(DatoCBX1);
+
+        // Comparamos las claves que son tipo Set con el String DatoCBX1
+        if (claves.contains(DatoCBX2)) {
+            try {
+                double numero2 = txtDivisaDos.getText().isEmpty() ? 0 : Double.parseDouble(txtDivisaDos.getText());
+                double MontoConversion = numero2 * cambioActual.get(DatoCBX1) / cambioActual.get(DatoCBX2);
+                DecimalFormat TresDecimales = new DecimalFormat("#.###"); // Formato para que solo tenga 3 digitos
+                double ResultadoFinal = Double.parseDouble(TresDecimales.format(MontoConversion));
+                if (MontoConversion == 0) {
+                    txtDivisaUno.setText(""); // establecer el número como entero en el
+                } else {
+                    txtDivisaUno.setText(String.valueOf(ResultadoFinal)); // establecer el número como entero en el
+                }
+
+            } catch (NumberFormatException e) {
+                AlertaError();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void AlertaError() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Aviso de Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Verifique si ingreso correctamente el numero");
+        alert.showAndWait();
+    }
+    // Creando el Filtro al ingresar datos al textField
+    private UnaryOperator<TextFormatter.Change> CrearFiltro(String Captura) {
+        Pattern pattern = Pattern.compile(Captura);
+        return change -> pattern.matcher(change.getControlNewText()).matches() ? change : null;
+    }
+
+    public void cambiarConversorDivisa(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Divisa.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void cambiarMenu(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MenuPrincipal.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void cambiarConversorTemperatura(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Temperatura.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

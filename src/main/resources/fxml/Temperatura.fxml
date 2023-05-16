@@ -25,7 +25,7 @@
       </AnchorPane>
       <Label fx:id="lbl__title" layoutX="283.0" layoutY="14.0" prefHeight="33.0" prefWidth="240.0" text="Conversor de Temperatura" />
       <Button fx:id="btn_Menu" layoutX="238.0" layoutY="257.0" mnemonicParsing="false" onAction="#cambiarMenu" prefHeight="33.0" prefWidth="100.0" stylesheets="@../css/MenuPrincipal.css" text="Menu" />
-      <Button fx:id="btn_Temperatura" layoutX="469.0" layoutY="257.0" mnemonicParsing="false" onAction="#cambiarConversorDivisa" stylesheets="@../css/MenuPrincipal.css" text="Divisas" />
+      <Button fx:id="btn_Divisa" layoutX="469.0" layoutY="257.0" mnemonicParsing="false" onAction="#cambiarConversorDivisa" stylesheets="@../css/MenuPrincipal.css" text="Divisas" />
       <ComboBox fx:id="cbxTemperaturaUno" layoutX="431.0" layoutY="81.0" prefHeight="45.0" prefWidth="131.0" />
       <TextField fx:id="txtTemperaturaUno" alignment="CENTER" layoutX="227.0" layoutY="81.0" prefHeight="45.0" prefWidth="176.0" />
       <TextField fx:id="txtTemperaturaDos" alignment="CENTER" layoutX="227.0" layoutY="171.0" prefHeight="45.0" prefWidth="176.0" />
