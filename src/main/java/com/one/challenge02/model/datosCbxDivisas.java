@@ -12,7 +12,7 @@ public class datosCbxDivisas {
     public List<String> ListaDivisas = new ArrayList<>();
     public Map<String, String> MapaDivisas;
 
-    public void DatosComboBox(){
+    public datosCbxDivisas(){
         // Divisas
         ListaDivisas.add("USD"); // DOLAR AMERICANO
         ListaDivisas.add("EUR"); // EURO
@@ -34,6 +34,5 @@ public class datosCbxDivisas {
         MapaDivisas.put("COP", "Peso colombiano");
         MapaDivisas.put("CLP", "Peso chileno");
         MapaDivisas.put("ARS", "Peso argentino");
-
     }
 }

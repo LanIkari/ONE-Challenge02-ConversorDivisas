@@ -10,7 +10,7 @@ module com.one.challenge02 {
     requires de.jensd.fx.glyphs.commons;
     requires org.json;
 
-    opens com.one.challenge02 to javafx.fxml;
+    opens com.one.challenge02.Controller to javafx.fxml;
     exports com.one.challenge02;
     exports com.one.challenge02.Controller;
     exports com.one.challenge02.conection;

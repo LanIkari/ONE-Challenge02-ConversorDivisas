@@ -6,16 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -46,10 +40,6 @@ public class conversorDivisasController {
     @FXML
     private TextField txtTemp2;
 
-    //Declaramos variables que nos ayudaran a guardar los cambios cada vez que se modifique.
-    private UnaryOperator<TextFormatter.Change> DivisaUno;
-    private UnaryOperator<TextFormatter.Change> DivisaDos;
-
     //Inicializamos nuestra API creando un objeto de tipo API
     API apiDivisas=new API();
     //Creamos un objeto que nos ayudara a guardar la taza de cambio actual
@@ -57,9 +47,7 @@ public class conversorDivisasController {
     //Inicializamos un Objeto de tipo DatosCbxDivisas para llenar los combobox
     datosCbxDivisas ListaCbx = new datosCbxDivisas();
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    navegacionController navegacion = new navegacionController();
 
     @FXML
     private void inicializacion(){
@@ -82,21 +70,18 @@ public class conversorDivisasController {
         cbxDivisaDos.setValue("MXN - Peso mexicano");
 
         // Crear los filtros para los TextFields de DIVISAS
-        DivisaUno = CrearFiltro("[0-9\\.]*");
-        DivisaDos = CrearFiltro("[0-9\\.]*");
+        //Declaramos variables que nos ayudaran a guardar los cambios cada vez que se modifique.
+        UnaryOperator<TextFormatter.Change> divisaUno = CrearFiltro("[0-9\\.]*");
+        UnaryOperator<TextFormatter.Change> divisaDos = CrearFiltro("[0-9\\.]*");
 
         // Crear los filtros para los textFields de DIVISAS
-        DivisaUno = CrearFiltro("[0-9\\.-]*");
-        DivisaDos = CrearFiltro("[0-9\\.-]*");
+        divisaUno = CrearFiltro("[0-9\\.-]*");
+        divisaDos = CrearFiltro("[0-9\\.-]*");
 
         // Capturando los datos ingresado en los textField de DIVISAS
-        txtDivisaUno.setTextFormatter(new TextFormatter<>(DivisaUno));
-        txtDivisaDos.setTextFormatter(new TextFormatter<>(DivisaDos));
-
-        // Capturando los datos ingresado en los textField de DIVISAS
-        txtTemp1.setTextFormatter(new TextFormatter<>(DivisaUno));
-        txtTemp2.setTextFormatter(new TextFormatter<>(DivisaDos));
-
+        txtDivisaUno.setTextFormatter(new TextFormatter<>(divisaUno));
+        txtDivisaDos.setTextFormatter(new TextFormatter<>(divisaDos));
+        
         // Carga el Aplicativo y digitamos algun dato en el textField DIVISAS
         txtDivisaUno.textProperty().addListener((observable, oldValue, newValue) -> {
             if (txtDivisaUno.isFocused())
@@ -106,6 +91,24 @@ public class conversorDivisasController {
             if (txtDivisaDos.isFocused())
                 CalculoDivisasDOS();
         });
+        // Cuando Seleccionamos un nuevo valor del comboBox1 de DIVISAS
+        cbxDivisaUno.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String NuevoValor = txtDivisaUno.getText();
+                txtDivisaUno.setText(NuevoValor);
+                CalculoDivisasDOS();
+            }
+        });
+
+        // Cuando Seleccionamos un nuevo valor del comboBox2 de DIVISAS
+        cbxDivisaDos.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String NuevoValor = txtDivisaDos.getText();
+                txtDivisaDos.setText(NuevoValor);
+                CalculoDivisasUNO();
+            }
+        });
+
     }
 
 
@@ -206,26 +209,11 @@ public class conversorDivisasController {
         return change -> pattern.matcher(change.getControlNewText()).matches() ? change : null;
     }
 
-    public void cambiarConversorDivisa(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Divisa.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
     public void cambiarMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MenuPrincipal.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        navegacion.cambiarMenu(event);
     }
     public void cambiarConversorTemperatura(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Temperatura.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        navegacion.cambiarConversorTemperatura(event);
     }
 
 }
