@@ -23,7 +23,6 @@
                </effect>
             </ImageView>
             <FontAwesomeIconView fill="#eeecec" glyphName="GITHUB" layoutX="30.0" layoutY="307.0" size="40}" text="" />
-            <Label fx:id="menu__title" alignment="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="26.0" prefWidth="359.0" text="Oracle Next Education" textAlignment="CENTER" />
             <FontAwesomeIconView fill="WHITE" glyphName="LINKEDIN" layoutX="35.0" layoutY="350.0" size="30" textAlignment="CENTER" />
             <FontAwesomeIconView fill="WHITE" glyphName="LINK" layoutX="34.0" layoutY="256.0" size="30" text="" />
             <FontAwesomeIconView fill="WHITE" glyphName="TWITTER" layoutX="34.0" layoutY="394.0" size="30" />
@@ -35,6 +34,11 @@
             </Label>
             <Label fx:id="lbl__twitter" layoutX="83.0" layoutY="370.0" text="\@Brandon_Ikari" />
             <Label layoutX="83.0" layoutY="232.0" text="BrandonAV-Portfolio" />
+            <ImageView fitHeight="133.0" fitWidth="200.0" layoutX="82.0" layoutY="32.0" preserveRatio="true">
+               <image>
+                  <Image url="@../img/logo-aluraespanhol.png" />
+               </image>
+            </ImageView>
          </children>
          <opaqueInsets>
             <Insets right="50.0" />
@@ -43,8 +47,13 @@
       <Label fx:id="menu__footer" layoutX="388.0" layoutY="537.0" prefHeight="19.0" prefWidth="359.0" text="Designed &amp; Built by Brandon Avendaño Villegas, crafted whit ❤" />
       <Button fx:id="btn__divisas" alignment="CENTER" layoutX="423.0" layoutY="269.0" mnemonicParsing="false" onAction="#cambiarConversorDivisa" prefHeight="33.0" prefWidth="263.0" text="Conversor de Divisas" />
       <Button fx:id="btn__temperarua" alignment="CENTER" layoutX="428.0" layoutY="342.0" mnemonicParsing="false" onAction="#cambiarConversorTemperatura" prefHeight="33.0" prefWidth="256.0" text="Conversor de Temperatura" />
-      <FontAwesomeIconView fill="WHITE" glyphName="DOLLAR" layoutX="632.0" layoutY="294.0" size="25" />
       <FontAwesomeIconView fill="WHITE" glyphName="THERMOMETER" layoutX="655.0" layoutY="367.0" size="25" />
+      <FontAwesomeIconView fill="WHITE" glyphName="MONEY" layoutX="639.0" layoutY="296.0" size="30" />
+      <ImageView fitHeight="133.0" fitWidth="242.0" layoutX="435.0" layoutY="44.0">
+         <image>
+            <Image url="@../img/OracleONE.png" />
+         </image>
+      </ImageView>
    </children>
    <opaqueInsets>
       <Insets />

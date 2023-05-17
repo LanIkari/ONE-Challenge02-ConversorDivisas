@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class API {
     // Clave para tener la API
-    private static final String API_KEY = "bf44afc3390147d090ebca2d078c12b5";
+    private static final String API_KEY = "4e6dba941c7b4f7aaa677ca64ef24e75";
 
     // Map para poner las divisas de la API
     Map<String, Double> divisas = new HashMap<>();

@@ -31,15 +31,6 @@ public class conversorDivisasController {
     private TextField txtDivisaDos;
     // =============================== Fin ====================================
 
-    @FXML
-    private ComboBox<String> cbxTemp1;
-    @FXML
-    private ComboBox<String> cbxTemp2;
-    @FXML
-    private TextField txtTemp1;
-    @FXML
-    private TextField txtTemp2;
-
     //Inicializamos nuestra API creando un objeto de tipo API
     API apiDivisas=new API();
     //Creamos un objeto que nos ayudara a guardar la taza de cambio actual
@@ -81,7 +72,7 @@ public class conversorDivisasController {
         // Capturando los datos ingresado en los textField de DIVISAS
         txtDivisaUno.setTextFormatter(new TextFormatter<>(divisaUno));
         txtDivisaDos.setTextFormatter(new TextFormatter<>(divisaDos));
-        
+
         // Carga el Aplicativo y digitamos algun dato en el textField DIVISAS
         txtDivisaUno.textProperty().addListener((observable, oldValue, newValue) -> {
             if (txtDivisaUno.isFocused())
