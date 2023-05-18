@@ -4,7 +4,7 @@
 </p>
 
 # ONE-Challenge02-ConversorDivisas 💱 
----
+
 <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html"><img alt="JDK" src="https://img.shields.io/badge/JDK-17.0.6-orange.svg"/></a>
 <a href="https://openjfx.io/"><img alt="JavaFX" src="https://img.shields.io/badge/JavaFX-20.0.1-skyblue.svg"/></a>
 <a href="https://maven.apache.org/ref/4.0.0-alpha-4/"><img alt="Maven" src="https://img.shields.io/badge/Maven-4.0.0-red.svg"/></a>
