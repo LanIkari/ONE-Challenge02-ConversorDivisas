@@ -81,7 +81,6 @@ En el siguiente video puedes ver una guia rapida para ejecutar el progrma.
 </p>
 <br>
 
-<video src=https://github.com/LanIkari/ONE-Challenge02-ConversorDivisas/assets/42923366/4e4e6557-993e-461d-9285-cec3c26a6bc2></video>
 
 
 ## Trello - Sprint :card_file_box:
