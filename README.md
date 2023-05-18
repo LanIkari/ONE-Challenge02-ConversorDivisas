@@ -99,7 +99,7 @@ que se creo especialmente para este desafio.
   <img width="100px" src="src/main/resources/img/怒.png" alt="Checkly" />
   </a>
   <br />
-  <i><sub>Designed Built by Brandon Avendaño Villegas</sub></i>
+  <i><sub>Designed & Built by Brandon Avendaño Villegas</sub></i>
   <br>
   <b><sub>Crafted with ❤</sub></b>
 <p>
